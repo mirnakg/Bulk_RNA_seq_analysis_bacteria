@@ -32,6 +32,7 @@ The analysis consists of five main scripts that should be run sequentially:
   - scikit-learn
 
 ### Input Files Required (Below is a public dataset that can be used with this pipeline)
+**update scripts with your owns files paths**
 
 1. **Reference genome FASTA**: `GCF_000009045.1_ASM904v1_genomic.fna`
    - *Bacillus subtilis* strain 168 reference genome
