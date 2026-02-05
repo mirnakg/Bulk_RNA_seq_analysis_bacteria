@@ -17,7 +17,7 @@ The analysis consists of five main scripts that should be run sequentially:
 
 ### Software Requirements
 
-- **Conda/Miniconda** with your virtual environment (Here called SRA-tools)
+- **Conda/Miniconda** with your virtual environment (Here called sra-tools, update files and code with your venv name)
 - **Bowtie2** (v2.3.0 or later) - Fast and memory-efficient aligner for bacterial genomes
 - **Trimmomatic** - Read quality trimming and adapter removal
 - **SAMtools** (v1.10 or later) - SAM/BAM file manipulation
