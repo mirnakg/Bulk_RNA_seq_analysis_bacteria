@@ -36,5 +36,5 @@ Editing shell scripts
 
 In the shell scripts, update directories as well as the email address where job status would be sent. 
 The trimming and alignment scripts run as parallel jobs, update the --array flag to the number of samples you have (For example, if you have 6 samples, then --array=1-6)
-In the python script, deseq performs differential gene expression analysis on two groups at a time. Edit this script to indicate the group of each of your samples in the same order they appear in the sample_names.txt file . 
+In the python script, deseq performs differential gene expression analysis on two groups at a time. Edit this script to indicate the group of each of your samples in the same order they appear in the sample_names.txt file 
 
