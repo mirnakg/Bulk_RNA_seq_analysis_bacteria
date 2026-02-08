@@ -35,17 +35,16 @@ The analysis consists of five main scripts that should be run sequentially:
 **update scripts with your owns files paths**
 
 1. **Reference genome FASTA**: `GCF_000009045.1_ASM904v1_genomic.fna`
-   - *Bacillus subtilis* strain 168 reference genome
-   - Download from NCBI: https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=224308
+   - For example, *Bacillus subtilis* strain 168 reference genome from NCBI: https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=224308
 
 2. **Genome annotation GTF**: `GCF_000009045.1_ASM904v1_genomic.gtf`
-   - Gene annotations for feature counting
-   - Must match the reference genome version
+   - Gene annotations for feature counting, must match the reference genome version
 
 3. **Raw FASTQ files**: Paired-end sequencing reads
-   - Format: `{sample}_1.fastq.gz` and `{sample}_2.fastq.gz`
-   - Should be listed in `SRR_Acc_List.txt` (one sample per line)
    - Use this public dataset for pipeline testing: SRP422250: Time-Course Transcriptome Analysis of Bacillus subtilis DB104
+   - Format used here (edit code if your format is different): `{sample}_1.fastq.gz` and `{sample}_2.fastq.gz`
+   - Should be listed in `SRR_Acc_List.txt` (one sample per line)
+  
 
 ---
 
@@ -74,8 +73,6 @@ The analysis consists of five main scripts that should be run sequentially:
 ```bash
 sbatch genome_idx_bowtie2.sh
 ```
-
-**Runtime**: ~5-15 minutes for bacterial genome
 
 ---
 
@@ -128,7 +125,7 @@ sbatch genome_idx_bowtie2.sh
 sbatch trim_read.sh
 ```
 
-**Runtime**: ~10-30 minutes per sample (depends on file size)
+This might take 10-30 minutes per sample (depends on file size and compute power)
 
 ---
 
@@ -189,11 +186,11 @@ sbatch trim_read.sh
 sbatch align_timmed_reads.sh
 ```
 
-**Runtime**: ~20-60 minutes per sample
+This is the longest step, might take ~20-60 minutes per sample
 
 **Expected Alignment Rates**:
 - Good quality bacterial RNA-seq: >85% alignment rate
-- If <70%: Check for contamination or wrong reference genome
+- If <70%, check for contamination or wrong reference genome
 
 ---
 
@@ -263,7 +260,7 @@ Allows multi-mapping reads for diagnostic purposes (not recommended for DE analy
 sbatch get_raw_counts.sh
 ```
 
-**Runtime**: ~10-30 minutes (processes all samples together)
+This migh take ~10-30 minutes (processes all samples together)
 
 ---
 
@@ -332,7 +329,7 @@ For each pair of conditions:
 
 #### 6. Figures Generated
 
-**Per Comparison**:
+**Foe each Comparison**:
 1. **MA Plot**: Mean expression vs. log2 fold change
    - Red points: Significant genes (padj < 0.05, |log2FC| > 1)
    - Gray points: Non-significant
@@ -377,7 +374,7 @@ For each pair of conditions:
 python deseq2_analysis.py
 ```
 
-**Runtime**: ~5-30 minutes depending on gene count and number of comparisons
+This might take 5-30 minutes depending on gene count and number of comparisons
 
 ---
 
@@ -408,7 +405,7 @@ python deseq2_analysis.py
 
 **After DESeq2**:
 - Check PCA plot: replicates should cluster together
-- If replicates are scattered: investigate sample quality or swap
+- If replicates are scattered, investigate sample quality or swap
 
 ---
 
@@ -434,30 +431,12 @@ python deseq2_analysis.py
 **Problem**: Memory errors
 - **Solution**: Increase SLURM `--mem` parameter or reduce `--cpus-per-task`
 
----
-
-## File Organization
-
-Recommended directory structure:
-```
-project/
-├── fastq/                          # Raw FASTQ files
-├── trimmed/                        # Trimmed FASTQ files
-├── genome_index_bowtie2/           # Bowtie2 index files
-├── bam/                            # Aligned BAM files
-├── counts/                         # Raw count matrices
-├── deseq2_results/                 # DESeq2 output
-│   ├── pairwise_comparisons/       # Individual comparison results
-│   ├── pairwise_comparisons_summary.csv
-│   ├── comparison_heatmap.png
-│   └── PCA_plot_all_samples.png
-├── logs/                           # SLURM log files
-└── scripts/                        # Analysis scripts
-```
 
 ---
 
-## Additional Notes
+## Some Notes
+
+SLURM error logs are found in `logs/` directory - make sure a logs directory is present in the same directory as the bash scripts
 
 ### Bacterial RNA-seq Specifics
 - Bacterial genomes are small (~4 Mb for *B. subtilis*)
@@ -470,12 +449,6 @@ project/
 - **Gene**: May include regulatory regions if annotated
 - Compare both outputs if uncertain
 
-
-### Memory and Runtime Optimization
-- Bacterial genomes are small; most parameters are conservative
-- Can reduce memory allocation if needed
-- Array jobs provide automatic parallelization
-
 ---
 
 ## References
@@ -486,7 +459,7 @@ project/
 - featureCounts: Liao et al. (2014) Bioinformatics
 - DESeq2: Love et al. (2014) Genome Biology
 
-**Study**:
+**Dataset used**:
 - SRP422250: Time-Course Transcriptome Analysis of *Bacillus subtilis* DB104
 
 ---
